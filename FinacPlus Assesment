@@ -1,0 +1,228 @@
+Coding Task Challenge
+1. Write a special cipher that is a combination of Caesar’s cipher followed by a simple
+RLE. The function should receive a string and the rotation number as parameters.
+Input: special Cipher(“AABCCC”, 3) Output: D2EF3
+
+def special_cipher(input_str, rotation):
+    def caesar_cipher(s, k):
+        result = []
+        for char in s:
+            if char.isalpha():
+                shift = ord('A') if char.isupper() else ord('a')
+                shifted_char = chr((ord(char) - shift + k) % 26 + shift)
+                result.append(shifted_char)
+            else:
+                result.append(char)
+        return ''.join(result)
+    
+    def run_length_encode(s):
+        encoded_str = []
+        i = 0
+        while i < len(s):
+            count = 1
+            while i + 1 < len(s) and s[i] == s[i + 1]:
+                i += 1
+                count += 1
+            encoded_str.append(s[i] + str(count))
+            i += 1
+        return ''.join(encoded_str)
+    
+    # Step 1: Apply Caesar Cipher
+    caesar_shifted = caesar_cipher(input_str, rotation)
+    
+    # Step 2: Apply Run-Length Encoding (RLE)
+    encoded_result = run_length_encode(caesar_shifted)
+    
+    return encoded_result
+
+# Example usage:
+print(special_cipher("AABCCC", 3))  # Output should be: D2EF3
+
+
+
+2. Write a program that finds the most optimized set of 6 units to shop with for values
+fewer than 100. Example: Units used are 1, 2, 5, 10, 20, 50 1: 1 (1 unit used) 2: 2 (1
+unit used) 3: 1+2 (2 units used) 4: 2+2 (2 units used) ... 98: 1+2+5+20+20+50 (6 units
+used) 99: 2+2+5+20+20+50 (6 units used) AVG of units = 3.4
+
+
+def optimized_units():
+    # Define the unit denominations
+    units = [1, 2, 5, 10, 20, 50]
+    max_value = 99
+
+    # Initialize the dp array with a large number (inf) for all values from 0 to max_value
+    dp = [float('inf')] * (max_value + 1)
+    dp[0] = 0  # Base case: 0 value requires 0 units
+
+    # Fill the dp array
+    for i in range(1, max_value + 1):
+        for unit in units:
+            if i >= unit:
+                dp[i] = min(dp[i], dp[i - unit] + 1)
+
+    # Calculate the average number of units used
+    total_units_used = sum(dp[1:max_value + 1])
+    average_units_used = total_units_used / max_value
+
+    # Output the results
+    for i in range(1, max_value + 1):
+        print(f"{i}: {dp[i]} units used")
+
+    print(f"Average number of units used: {average_units_used:.2f}")
+
+# Run the function
+optimized_units()
+
+
+
+
+Scenario
+3. Imagine you work for amazon, what is the Meta data information you will store for
+an item in your Database. For E.g. the item is a shirt, once you have stored the Meta
+data how will use the information?
+
+
+When working for Amazon, the metadata for an item such as a shirt needs to be comprehensive to facilitate various functions like search, recommendation, inventory management, and customer service. Below is a list of metadata information that could be stored for an item in the database:
+
+Metadata Information for a Shirt:
+Basic Information:
+
+Item ID: Unique identifier for the shirt.
+Name: The name or title of the shirt.
+Description: Detailed description of the shirt.
+Brand: Brand name of the shirt.
+Category: The category (e.g., Men's Clothing, Women's Clothing).
+Subcategory: Subcategory (e.g., T-Shirts, Formal Shirts).
+SKU (Stock Keeping Unit): Unique identifier used for inventory management.
+UPC/EAN: Universal Product Code/European Article Number.
+Attributes:
+
+Size: Available sizes (e.g., S, M, L, XL).
+Color: Available colors.
+Material: Material composition (e.g., 100% Cotton, Polyester Blend).
+Fit: Type of fit (e.g., Slim Fit, Regular Fit).
+Pattern: Pattern type (e.g., Solid, Striped, Checkered).
+Sleeve Length: Sleeve type (e.g., Short Sleeve, Long Sleeve).
+Neck Style: Neck style (e.g., Crew Neck, V-Neck, Collared).
+Gender: Gender specification (e.g., Men, Women, Unisex).
+Pricing and Availability:
+
+Price: Current price of the shirt.
+Discount: Any applicable discounts.
+Stock Level: Quantity available in stock.
+Restock Date: Expected restock date if out of stock.
+Images and Media:
+
+Images: URLs of the product images.
+Video: URLs of any product videos.
+360 View: Interactive 360-degree view of the shirt.
+Ratings and Reviews:
+
+Average Rating: Average customer rating.
+Number of Reviews: Total number of customer reviews.
+Review Snippets: Highlighted snippets from reviews.
+Logistics:
+
+Weight: Weight of the shirt.
+Dimensions: Dimensions of the packaged shirt.
+Shipping Options: Available shipping options and times.
+Warehouse Location: Location(s) where the item is stored.
+Vendor and Manufacturing:
+
+Manufacturer: Name of the manufacturer.
+Vendor: Name of the vendor/supplier.
+Country of Origin: Country where the shirt is made.
+Manufacturing Date: Date of manufacture.
+Batch Number: Manufacturing batch number.
+Legal and Compliance:
+
+Compliance Certificates: Any relevant compliance or certification details.
+Return Policy: Return and refund policy for the shirt.
+How to Use the Metadata Information:
+Search and Filter:
+
+Search Optimization: Use keywords, categories, and attributes to enhance search results.
+Filtering Options: Allow customers to filter by size, color, brand, price range, etc.
+Recommendations:
+
+Personalized Suggestions: Use customer preferences and browsing history to recommend similar or complementary items.
+Cross-Selling: Suggest related items (e.g., pants, shoes) based on the metadata.
+Inventory Management:
+
+Stock Tracking: Monitor stock levels and trigger restock alerts.
+Demand Forecasting: Use sales data to predict future demand and optimize inventory.
+Pricing Strategies:
+
+Dynamic Pricing: Adjust prices based on demand, stock levels, and competitor pricing.
+Promotions: Implement discounts and special offers based on sales trends.
+Customer Service:
+
+Order Tracking: Provide detailed order tracking information.
+Product Inquiries: Quickly respond to customer queries using detailed product metadata.
+Analytics and Reporting:
+
+Sales Analysis: Analyze sales performance by category, brand, size, etc.
+Customer Feedback: Aggregate and analyze customer reviews and ratings to improve product offerings.
+Compliance and Legal:
+
+Regulatory Compliance: Ensure all product information meets regulatory requirements.
+Return Management: Handle returns efficiently by using detailed product metadata.
+By storing detailed and structured metadata for items, Amazon can enhance the shopping experience, streamline operations, and make data-driven decisions to improve overall business performance.
+
+
+
+
+
+
+
+Asset View Product
+4. Represent below problem in a high level design diagram.
+ Have a set of 250 users.
+ Each user has at least one account with assets , i.e. assets can be stocks or mutual
+funds
+ Each user will see his portfolio real time at any time of the day
+ Prices come from different sources.
+ Design a platform to create, calculate and maintain the portfolios of these users
+ Reliably and should scale.
+ The portfolios should be updated as soon as the source provides data for the
+platform.
+ The data gets refreshed every 10 mins.
+
+
+
+
+
++----------------------+
+                                   |      Users           |
+                                   +-----------+----------+
+                                               |
+                                               |
+                                  +------------v------------+
+                                  |    User Interface (UI)   |
+                                  +------------+-------------+
+                                               |
+                             +-----------------v-----------------+
+                             |  Portfolio Management Service     |
+                             +----------+---------+--------------+
+                                        |         |
+            +---------------------------v----+    +----------------------------+
+            |        User Account Service     |    |        Asset Service       |
+            +----------------+----------------+    +----------+-----------------+
+                             |                             |
+            +----------------v-----------+     +-----------v------------------+
+            |      Account Database      |     |          Asset Database      |
+            +----------------+-----------+     +----------------+-------------+
+                             |                             |
+                +------------v------------+       +--------v--------+    +------------+
+                |    Calculation Engine   |       | Pricing Service |----| Price APIs |
+                +------------+------------+       +--------+--------+    +------------+
+                             |                             |
+                             +------------+----------------+
+                                          |
+                              +-----------v----------+
+                              |  Real-Time Data Store |
+                              +-----------------------+
+
+
+
